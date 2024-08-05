@@ -50,3 +50,8 @@
 .form-container input[type="submit"]:hover {
     background-color: #3f5261dd;
 }
+
+.form-container input[type="submit"]:hover {
+    background-color: #2e3b47; /* Slightly darker color */
+    /*transform: scale(1.05); Slightly enlarge the button */
+}

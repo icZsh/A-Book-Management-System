@@ -66,9 +66,13 @@ function createTable() {
     const authorHeader = document.createElement('th');
     authorHeader.textContent = 'Author';
 
+    const deleteHeader = document.createElement('th');
+    deleteHeader.textContent = 'Action';
+
     headerRow.appendChild(idHeader);
     headerRow.appendChild(titleHeader);
     headerRow.appendChild(authorHeader);
+    headerRow.appendChild(deleteHeader);
     thead.appendChild(headerRow);
     table.appendChild(thead);
 
@@ -119,7 +123,7 @@ async function addBook(event) {
         alert('Both title and author fields are required.');
         return;
     }
-    
+
     try {
         const response = await fetch('http://localhost:3000/books', {
             method: 'POST',
