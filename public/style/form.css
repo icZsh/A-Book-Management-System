@@ -1,0 +1,52 @@
+/* public/styles/form.css */
+
+/* Form styling */
+.form-container {
+    margin-bottom: 30px;
+    margin: 20px auto; /* Center the form with automatic left and right margins */
+    max-width: 90%; /* Ensure the form does not exceed its container */
+    padding: 20px; /* Add padding to the form container */
+    background-color: #fff;
+    border-radius: 8px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); Optional: Add a box shadow for better visual separation */
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-container label {
+    font-weight: bold;
+}
+
+.form-container input[type="text"] {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    transition: border-color 0.3s;
+}
+
+.form-container input[type="text"]:focus {
+    border-color: #3f5261dd;
+}
+
+.form-container input[type="submit"] {
+    background-color: #3f5261dd;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.form-container input[type="submit"]:hover {
+    background-color: #3f5261dd;
+}

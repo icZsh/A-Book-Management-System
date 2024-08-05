@@ -1,0 +1,55 @@
+/* public/styles/table.css */
+
+/* Table styling */
+table {
+    width: 900px;
+    margin: 10px auto; /* Center the table with automatic left and right margins */
+    border-collapse: collapse;
+    max-width: 90%; /* Optional: set a maximum width for the table */
+    margin-top: 50px; /* Increase the top margin to add more space */
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #3f5261dd;
+    color: white;
+    font-weight: bold;
+    position: sticky; 
+    top: 0;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+table caption {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+/* Delete button styling */
+.delete-button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
+}
