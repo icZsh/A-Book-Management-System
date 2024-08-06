@@ -66,12 +66,16 @@ function createTable() {
     const authorHeader = document.createElement('th');
     authorHeader.textContent = 'Author';
 
+    const statusHeader = document.createElement('th');
+    statusHeader.textContent = 'Status';
+
     const deleteHeader = document.createElement('th');
     deleteHeader.textContent = 'Action';
 
     headerRow.appendChild(idHeader);
     headerRow.appendChild(titleHeader);
     headerRow.appendChild(authorHeader);
+    headerRow.appendChild(statusHeader);
     headerRow.appendChild(deleteHeader);
     thead.appendChild(headerRow);
     table.appendChild(thead);
@@ -97,14 +101,25 @@ async function fetchBooks() {
                 <td>${book.id}</td>
                 <td>${book.title}</td>
                 <td>${book.author}</td>
+                <td>
+                    <select data-id="${book.id}" class="status-select">
+                        <option value="Wishlist" ${book.status === 'Wishlist' ? 'selected' : ''}>Wishlist</option>
+                        <option value="Reading" ${book.status === 'Reading' ? 'selected' : ''}>Reading</option>
+                        <option value="Finished" ${book.status === 'Finished' ? 'selected' : ''}>Finished</option>
+                    </select>
+                </td>
                 <td><button class="delete-button" data-id="${book.id}">Delete</button></td>
             `;
             tableBody.appendChild(row);
         });
 
+        // Add event listeners to the status select elements
+        document.querySelectorAll('.status-select').forEach(select => {
+            select.addEventListener('change', updateBookStatus);
+        });
+
         // Add event listeners for delete buttons
-        const deleteButtons = document.querySelectorAll('.delete-button');
-        deleteButtons.forEach(button => {
+        document.querySelectorAll('.delete-button').forEach(button => {
             button.addEventListener('click', deleteBook);
         });
     } catch (error) {
@@ -136,6 +151,8 @@ async function addBook(event) {
         if (response.ok) {
             fetchBooks(); // Refresh the list of books
             document.querySelector('#addBookForm').reset(); // Reset the form
+        } else if(response.status == 400){
+            alert('This book already exists.');
         } else {
             console.error('Error adding book:', response.statusText);
         }
@@ -143,6 +160,31 @@ async function addBook(event) {
         console.error('Error adding book:', error);
     }
 }
+
+async function updateBookStatus(event) {
+    const select = event.target;
+    const bookId = select.getAttribute('data-id');
+    const newStatus = select.value;
+
+    try {
+        const response = await fetch(`http://localhost:3000/books/${bookId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: newStatus })
+        });
+
+        if (!response.ok) {
+            console.error('Error updating book status:', response.statusText);
+        } else {
+            fetchBooks(); // Refresh the list of books
+        }
+    } catch (error) {
+        console.error('Error updating book status:', error);
+    }
+}
+
 
 // Function to handle book deletion
 async function deleteBook(event) {

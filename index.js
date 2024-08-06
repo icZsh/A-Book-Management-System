@@ -13,7 +13,11 @@ let books = readBooksFromFile();
 function readBooksFromFile() {
     try {
         const data = fs.readFileSync('books.json', 'utf8');
-        return JSON.parse(data);
+        const books = JSON.parse(data);
+        return books.map(book => ({
+            ...book,
+            status: book.status
+        }));
     } catch (err) {
         console.error('Error reading books from file:', err);
         return [];
@@ -50,11 +54,17 @@ app.post('/books', (req, res) => {
         return res.status(400).send('Both title and author fields are required.');
     }
 
-    const books = readBooksFromFile();
+    // Check for duplicates
+    const duplicate = books.find(b => b.title === title && b.author === author);
+    if (duplicate) {
+        return res.status(400).send('This book already exists.');
+    }
+
     const newBook = {
         id: books.length + 1,
         title,
-        author
+        author,
+        status: 'Wishlist'
     };
     books.push(newBook);
     writeBooksToFile(books);
@@ -63,11 +73,17 @@ app.post('/books', (req, res) => {
 
 // PUT to update a book by ID
 app.put('/books/:id', (req, res) => {
-    const book = books.find(b => b.id === parseInt(req.params.id));
+    const bookId = parseInt(req.params.id);
+    const { title, author, status } = req.body;
+
+    const books = readBooksFromFile();
+    const book = books.find(b => b.id === bookId);
     if (!book) return res.status(404).send('Book not found');
+
+    if (title) book.title = title;
+    if (author) book.author = author;
+    if (status) book.status = status;
     
-    book.title = req.body.title;
-    book.author = req.body.author;
     writeBooksToFile(books);
     res.json(book);
 });
